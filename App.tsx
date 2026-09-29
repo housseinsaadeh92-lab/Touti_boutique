@@ -36,6 +36,11 @@ const App: React.FC = () => {
   const [isAdminInventoryOpen, setIsAdminInventoryOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
+  // Cover Banner Image State
+  const [bannerImageUrl, setBannerImageUrl] = useState<string>(() => {
+    return localStorage.getItem('touti_banner_url') || 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=2000&q=80';
+  });
+
   // Data State
   const [products, setProducts] = useState<Product[]>(() => {
     const saved = localStorage.getItem('touti_products');
@@ -314,12 +319,34 @@ const App: React.FC = () => {
       />
       
       {/* Premium Full-Width Cover Banner Image */}
-      <div className="w-full h-[250px] sm:h-[350px] md:h-[450px] bg-slate-50 overflow-hidden border-b border-slate-100">
+      <div className="relative w-full h-[125px] sm:h-[175px] md:h-[225px] bg-slate-50 overflow-hidden border-b border-slate-100">
         <img 
-          src="https://images.unsplash.com/photo-1519689680058-324335c77eb2?auto=format&fit=crop&w=2000&q=80" 
+          src={bannerImageUrl} 
           alt="Touti Boutique Collection Banner" 
+          onError={(e) => {
+            e.currentTarget.src = "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=2000&q=80";
+          }}
           className="w-full h-full object-cover object-center"
         />
+        {isAdmin && (
+          <button
+            onClick={() => {
+              const newUrl = prompt("Enter new banner image URL:", bannerImageUrl);
+              if (newUrl !== null) {
+                const trimmed = newUrl.trim();
+                setBannerImageUrl(trimmed || 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=2000&q=80');
+                localStorage.setItem('touti_banner_url', trimmed || 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=2000&q=80');
+              }
+            }}
+            className="absolute bottom-2 right-2 bg-white/90 hover:bg-white text-slate-800 text-[9px] sm:text-[10px] font-black uppercase tracking-wider px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl shadow-lg border border-slate-200 backdrop-blur-sm flex items-center gap-1.5 transition-all z-10 hover:scale-105 active:scale-95 cursor-pointer"
+            title="Edit Banner Image"
+          >
+            <svg className="w-3 h-3 text-[#B89548]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+            Edit Cover Image
+          </button>
+        )}
       </div>
 
       <main className="flex-1 max-w-7xl mx-auto w-full pb-20">

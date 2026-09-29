@@ -313,8 +313,17 @@ const App: React.FC = () => {
         onLogout={handleLogout}
       />
       
+      {/* Premium Full-Width Cover Banner Image */}
+      <div className="w-full h-[250px] sm:h-[350px] md:h-[450px] bg-slate-50 overflow-hidden border-b border-slate-100">
+        <img 
+          src="https://images.unsplash.com/photo-1519689680058-324335c77eb2?auto=format&fit=crop&w=2000&q=80" 
+          alt="Touti Boutique Collection Banner" 
+          className="w-full h-full object-cover object-center"
+        />
+      </div>
+
       <main className="flex-1 max-w-7xl mx-auto w-full pb-20">
-        <section className="px-4 sm:px-8 mt-12">
+        <section id="products-section" className="px-4 sm:px-8 mt-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex flex-wrap gap-2 items-center">
               <button
